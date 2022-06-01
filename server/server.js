@@ -80,4 +80,4 @@ app.get("/users/:id", function (req, res) {
 app.listen(5000, () => {
   console.log("server çalıştı.");
 });
-//ASDÇASMÖ:DÖÇQWNERMÇQÖWR QWRÖQW
+//DENEME 2
