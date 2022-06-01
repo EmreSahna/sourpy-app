@@ -7,7 +7,7 @@ const User = require("./models/User");
 const ApiKey = require("./models/ApiKey");
 
 const app = express();
-// SELAM BU BİR DEGİSİKLİKgasdasdas
+
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -80,3 +80,4 @@ app.get("/users/:id", function (req, res) {
 app.listen(5000, () => {
   console.log("server çalıştı.");
 });
+//ASDÇASMÖ:DÖÇQWNERMÇQÖWR QWRÖQW
