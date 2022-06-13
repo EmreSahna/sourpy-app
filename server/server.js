@@ -11,7 +11,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-// mongoose connection
 mongoose
   .connect(
     "mongodb+srv://sourpy:sourpy@cluster0.z2q6q.mongodb.net/sourpy?retryWrites=true&w=majority"
@@ -46,14 +45,15 @@ app.post("/user", function (req, res) {
     })
     .catch(function (err) {
       res.json(err);
+      console.log(err);
     });
 });
 
-app.post("/key/:id", function (req, res) {
+app.post("/key/:username", function (req, res) {
   ApiKey.create(req.body)
     .then(function (ApiKey) {
       return User.findOneAndUpdate(
-        { _id: req.params.id },
+        { username: req.params.username },
         { $push: { keys: ApiKey._id } },
         { new: true }
       );
@@ -66,8 +66,8 @@ app.post("/key/:id", function (req, res) {
     });
 });
 
-app.get("/users/:id", function (req, res) {
-  User.findOne({ _id: req.params.id })
+app.get("/users/:username", function (req, res) {
+  User.findOne({ username: req.params.username })
     .populate("keys")
     .then(function (User) {
       res.json(User);
@@ -80,4 +80,3 @@ app.get("/users/:id", function (req, res) {
 app.listen(5000, () => {
   console.log("server çalıştı.");
 });
-//DENEME 2
