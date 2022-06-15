@@ -1,7 +1,8 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import httpRequests from "../http-requests";
-
+import { Link } from "react-router-dom";
+import "../css/signupscreen.css";
+import httpRequests from "../http/http-requests";
 export default function SignupScreen() {
   const initialValues = { username: "", password: "", fullName: "" };
   const [formValues, setFormValues] = useState(initialValues);
@@ -59,6 +60,16 @@ export default function SignupScreen() {
           <h2>Register</h2>
           <form action="#" onSubmit={handleSubmit}>
             <div className="inputBx">
+              <span>Full Name</span>
+              <input
+                type="text"
+                name="fullName"
+                value={formValues.fullName}
+                onChange={handleChange}
+                placeholder="Full Name"
+              />
+            </div>
+            <div className="inputBx">
               <span>Username</span>
               <input
                 type="text"
@@ -68,17 +79,6 @@ export default function SignupScreen() {
                 onChange={handleChange}
               />
             </div>
-            <div className="inputBx">
-              <span>Email</span>
-              <input
-                type="text"
-                name="fullName"
-                value={formValues.fullName}
-                onChange={handleChange}
-                placeholder="Email"
-              />
-            </div>
-
             <div className="inputBx">
               <span>Password</span>
               <input
@@ -91,15 +91,12 @@ export default function SignupScreen() {
             </div>
 
             <div className="inputBx">
-              <input type="submit" value="Register" name="" />
-              <button onClick={registerUser} type="button">
-                Submit
-              </button>
+              <input type="submit" value="Register" name="" onClick={registerUser}/>
             </div>
             <div className="inputBx">
-              <a>
-                Already have an account? <a> Sign in</a>
-              </a>
+              <p>
+                Already have an account? <Link to="/login"> Sign in</Link>
+              </p>
             </div>
           </form>
         </div>

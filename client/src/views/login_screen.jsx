@@ -1,28 +1,22 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import httpRequests from "../http-requests";
-
+import { Link } from "react-router-dom";
+//Css file
+import "../css/loginscreen.css";
+import httpRequests from "../http/http-requests";
 export default function LoginScreen() {
   const initialValues = { username: "", password: "" };
-  const initialApiKey = { apiName: "", apiKey: ""};
   const [formValues, setFormValues] = useState(initialValues);
-  const [formApiKey, setFormApiKey] = useState(initialApiKey); 
-  const [listedApis, setListedApis] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
 
-  const handleApi = (e) => {
-    const { name, value} = e.target;
-    setFormApiKey({ ...formApiKey, [name]: value});
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    //Form submit yapıldığı zaman değerleri kontrol edilmesini sağlıyor.
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
@@ -33,27 +27,6 @@ export default function LoginScreen() {
       if(response.data.password == formValues.password){
         console.log("Giriş yapıldı!")
       }
-    })
-    .catch(e => {
-      console.log(e);
-    })
-  }
- 
-  const postApiKey = () => {
-    httpRequests.addApiKey(formApiKey, formValues.username)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(e => {
-      console.log(e);
-    })
-  }
-
-  const getApiKey = () => {
-    httpRequests.listApiKey(formValues.username)
-    .then(response => {
-      console.log(response.data.keys);
-      setListedApis(response.data.keys);
     })
     .catch(e => {
       console.log(e);
@@ -81,6 +54,9 @@ export default function LoginScreen() {
   };
   return (
     <section>
+      <div className="imgBx">
+        <img src="assets/bg.jpg" />
+      </div>
       <div className="contentBx">
         <div className="formBx">
           <h2>Login</h2>
@@ -105,26 +81,6 @@ export default function LoginScreen() {
                 placeholder="* * * * * * *"
               />
             </div>
-            <div className="inputBx">
-              <span>Api Name</span>
-              <input
-                type="text"
-                name="apiName"
-                value={formApiKey.apiName}
-                placeholder="Api Name"
-                onChange={handleApi}
-              />
-            </div>
-            <div className="inputBx">
-              <span>Api Key</span>
-              <input
-                type="text"
-                name="apiKey"
-                value={formApiKey.apiKey}
-                placeholder="Api Key"
-                onChange={handleApi}
-              />
-            </div>
             <div className="remember">
               <label htmlFor="">
                 <input type="checkbox" />
@@ -132,29 +88,12 @@ export default function LoginScreen() {
               </label>
             </div>
             <div className="inputBx">
-              <button onClick={loginUser}>
-                Sign In
-              </button>
-              <button onClick={postApiKey}>
-                Send Api
-              </button>
-              <button onClick={getApiKey}>
-                Get Keys
-              </button>
+              <input type="submit" value="Sign in" name="" onClick={loginUser} />
             </div>
             <div className="inputBx">
               <p>
-                Don't have an account? <a> Sign up</a>
+                Don't have an account? <Link to="/signup"> Sign up</Link>
               </p>
-            </div>
-            <div>
-              {
-                listedApis.map((e) => {
-                  return (
-                  <p>{e.apiName} = {e.apiKey}</p>
-                  );
-                })
-              }
             </div>
           </form>
         </div>

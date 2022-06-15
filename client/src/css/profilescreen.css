@@ -1,0 +1,11 @@
+.profileScreen {
+  display: flex;
+}
+
+.profileScreen .markets {
+  display: flex;
+}
+.profileScreen .markets .marketIcon {
+  display: flex;
+  margin: 10px;
+}

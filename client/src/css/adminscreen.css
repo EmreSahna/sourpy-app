@@ -1,0 +1,6 @@
+.home {
+  display: flex;
+}
+.home .homeContainer {
+  flex: 8;
+}
