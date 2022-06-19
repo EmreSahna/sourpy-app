@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import "../css/profilescreen.css";
+import "../css/profilescreen.scss";
 import { useParams } from "react-router-dom";
 import httpRequests from "../http/http-requests";
+
 const ProfileScreen = () => {
   const { id } = useParams();
   const markets = [
@@ -24,7 +25,7 @@ const ProfileScreen = () => {
         "https://image.similarpng.com/very-thumbnail/2020/11/Amazon-icon-in-flat-design-on-transparent-background-PNG.png",
     },
   ];
-  const initialValues = { apiName: "",apiKey: "" };
+  const initialValues = { apiName: "", apiKey: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [listedApis, setListedApis] = useState([]);
   const [formErrors, setFormErrors] = useState({});
@@ -37,14 +38,9 @@ const ProfileScreen = () => {
   const [value, setValue] = useState(getInitialState);
 
   const handleChangeDropDown = (e) => {
-    /*setValue(e.target.value);
-    console.log(e.target.value);
-    console.log(value);
-    setFormValues.apiName(e.target.value);
-    */
-   setValue(e.target.value);
-   formValues.apiName = e.target.value;
-   setFormValues({...formValues});
+    setValue(e.target.value);
+    formValues.apiName = e.target.value;
+    setFormValues({ ...formValues });
   };
 
   const handleChange = (e) => {
@@ -54,20 +50,44 @@ const ProfileScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //Form submit yapıldığı zaman değerleri kontrol edilmesini sağlıyor.
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
 
-  const submitKey = () => {
-    httpRequests.addApiKey(formValues, id)
-    .then(response => {
-      console.log(response);
-    })
-    .catch(e => {
-      console.log(e);
-    })
+  const deleteApi = (username,id) => {
+    httpRequests.deleteApiKey(username,id)
+      .then(response => {
+        console.log(response + " deleted.");
+      })
+      .catch((e) => {
+        console.log(e);
+      })
   }
+
+  const updateApi = (id) => {
+    const data = {
+      apiName: "updated",
+      apiKey: "key"
+    }
+    httpRequests.updateKey(id,data)
+      .then(response => {
+        console.log(response + " updated.");
+      })
+      .catch((e) => {
+        console.log(e);
+      })
+  }
+
+  const submitKey = () => {
+    httpRequests
+      .addApiKey(formValues, id)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
     console.log(formErrors);
@@ -77,14 +97,15 @@ const ProfileScreen = () => {
   }, [formErrors]);
 
   useEffect(() => {
-    httpRequests.listApiKey(id)
-    .then(response => {
-      setListedApis(response.data.keys);
-    })
-    .catch(e => {
-      console.log(e);
-    })
-  })
+    httpRequests
+      .getUser(id)
+      .then((response) => {
+        setListedApis(response.data.keys);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
 
   const validate = (values) => {
     const errors = {};
@@ -97,43 +118,73 @@ const ProfileScreen = () => {
     <div className="profileScreen">
       <div className="formBx">
         <h2>Add API</h2>
-        <form action="#" onSubmit={handleSubmit}>
+        <form className="addApi" action="#" onSubmit={handleSubmit}>
           <div className="inputBx">
-            <span>API KEY</span>
             <input
               type="text"
+              id="apiKey"
+              required
+              className="apiKey"
               name="apiKey"
               value={formValues.apiKey}
-              placeholder="API KEY"
               onChange={handleChange}
             />
+            <label for="apiKey" className="input-label">
+              API KEY
+            </label>
           </div>
-          <select value={value} onChange={handleChangeDropDown}>
+
+          <select
+            className="dropdown"
+            value={value}
+            onChange={handleChangeDropDown}
+          >
             {markets.map((e) => (
-              <option value={e.title}>{e.title}</option>
+              <option key={e.key} value={e.title}>
+                {e.title}
+              </option>
             ))}
           </select>
           <div className="inputBx">
-              <input type="submit" value="Submit Api Key" name="" onClick={submitKey} />
-            </div>
+            <input
+              type="submit"
+              value="Submit Api Key"
+              name=""
+              onClick={submitKey}
+            />
+          </div>
         </form>
       </div>
-      <div className="ornektablo">
-            <h1>Apilerin Bulunduğu Tablo</h1>
-            <table>
-              <tbody>
-                  {
-                    listedApis.map((e) => {
-                      return (
-                        <tr>
-                           <td>{e.apiName}</td>
-                           <td>{e.apiKey}</td>
-                        </tr>
-                     )
-                    })
-                  }
-              </tbody>
-            </table>
+      <div class="container">
+        <h2>All APIs</h2>
+        <ul class="responsive-table">
+          <li class="table-header">
+            <div class="colH col-1">Image</div>
+            <div class="colH col-2">API Name</div>
+            <div class="colH col-3">API Key</div>
+            <div class="colH col-4">Functions</div>
+          </li>
+          {listedApis.map((e) => {
+            return (
+              <li class="table-row">
+                <div class="col col-1" data-label="Image">
+                  {e.apiName}
+                </div>
+                <div class="col col-2" data-label="Api Name">
+                  {e.apiName}
+                </div>
+                <div class="col col-3" data-label="Api Key">
+                  {e.apiKey}
+                </div>
+
+                <div class="col col-4" data-label="Functions">
+                  <input type="button" value="Delete" className="delete" onClick={() => deleteApi(id,e._id)}/>
+                  <input type="button" value="Update" className="update" onClick={() => updateApi(e._id)}/>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

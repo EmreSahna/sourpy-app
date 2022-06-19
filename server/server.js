@@ -18,20 +18,12 @@ mongoose
   .then(console.log("Connected to Database"))
   .catch((err) => console.log(err));
 
+
+//User Methods
 app.get("/users", function (req, res) {
   User.find({})
     .then(function (Users) {
       res.json(Users);
-    })
-    .catch(function (err) {
-      res.json(err);
-    });
-});
-
-app.get("/keys", function (req, res) {
-  ApiKey.find({})
-    .then(function (ApiKeys) {
-      res.json(ApiKeys);
     })
     .catch(function (err) {
       res.json(err);
@@ -46,6 +38,28 @@ app.post("/user", function (req, res) {
     .catch(function (err) {
       res.json(err);
       console.log(err);
+    });
+});
+
+app.get("/users/:username", function (req, res) {
+  User.findOne({ username: req.params.username })
+    .populate("keys")
+    .then(function (User) {
+      res.json(User);
+    })
+    .catch(function (err) {
+      res.json(err);
+    });
+});
+
+//ApiKey Methods
+app.get("/keys", function (req, res) {
+  ApiKey.find({})
+    .then(function (ApiKeys) {
+      res.json(ApiKeys);
+    })
+    .catch(function (err) {
+      res.json(err);
     });
 });
 
@@ -66,16 +80,29 @@ app.post("/key/:username", function (req, res) {
     });
 });
 
-app.get("/users/:username", function (req, res) {
-  User.findOne({ username: req.params.username })
-    .populate("keys")
-    .then(function (User) {
-      res.json(User);
-    })
-    .catch(function (err) {
-      res.json(err);
-    });
-});
+app.put("/keys/:id", function(req,res){
+  ApiKey.findOneAndUpdate({_id: req.params.id},{apiName: req.body.apiName, apiKey: req.body.apiKey})
+  .then(function(ApiKey){
+    res.json(ApiKey);
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+})
+
+app.delete("/keys/:username/:id", function(req,res) {
+  ApiKey.findOneAndDelete({_id: req.params.id})
+  .then(function(ApiKey){
+    return User.findOneAndUpdate(
+      { username: req.params.username },
+      { $pull: {keys: ApiKey._id} },
+      { new: true }
+    )
+  })
+  .catch(function(err){
+    res.json(err);
+  })
+})
 
 app.listen(5000, () => {
   console.log("server çalıştı.");

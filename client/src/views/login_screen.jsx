@@ -1,13 +1,14 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-//Css file
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "../css/loginscreen.css";
 import httpRequests from "../http/http-requests";
 export default function LoginScreen() {
+  const navigate = useNavigate();
   const initialValues = { username: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [authCode , setAuthCode] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,7 +17,6 @@ export default function LoginScreen() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //Form submit yapıldığı zaman değerleri kontrol edilmesini sağlıyor.
     setFormErrors(validate(formValues));
     setIsSubmit(true);
   };
@@ -25,7 +25,7 @@ export default function LoginScreen() {
     httpRequests.getUser(formValues.username)
     .then(response => {
       if(response.data.password == formValues.password){
-        console.log("Giriş yapıldı!")
+        navigate(`/panel/${formValues.username}`,{state: response.data.username});
       }
     })
     .catch(e => {

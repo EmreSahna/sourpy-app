@@ -43,12 +43,13 @@ const Sidebar = ({ setSelectedPage }) => {
       id: 7,
       title: "Logout",
       icon: <LogoutIcon className="icon" />,
+      
     },
   ];
   return (
     <div className="sidebar">
       <div className="top">
-        <span className="logo">Logo Area</span>
+        <span className="logo">Sourpy</span>
       </div>
       <hr />
       <div className="center">
@@ -61,10 +62,7 @@ const Sidebar = ({ setSelectedPage }) => {
           ))}
         </ul>
       </div>
-      <div className="bottom">
-        <div className="colorOption"></div>
-        <div className="colorOption"></div>
-      </div>
+      <div className="bottom">{/* Optional*/}</div>
     </div>
   );
 };
