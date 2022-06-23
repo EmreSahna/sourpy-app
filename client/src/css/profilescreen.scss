@@ -44,11 +44,11 @@ h2 {
 
 .responsive-table {
   li {
-    border-radius: 3px;
+    border-radius: 0px;
     padding: 25px 30px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin-bottom: 0px;
   }
   .table-header {
     background-color: #95a5a6;
@@ -128,10 +128,12 @@ h2 {
 //API KEY FORM
 .inputBx {
   position: relative;
+  margin-bottom: 35px;
 }
 .apiKey {
   padding: 10px;
   border: none;
+  height: 100%;
   border-radius: 4px;
   font: inherit;
   color: rgb(173, 116, 116);
@@ -155,4 +157,39 @@ h2 {
 
 .apiKey:is(:focus, :valid) {
   outline-color: #d1c5fc;
+}
+
+/* Market Cards*/
+.marketCards {
+  width: 80vw;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+.marketCard {
+  max-height: 160px;
+  width: 250px;
+  margin: 10px 20px;
+  cursor: pointer;
+}
+.marketCard img {
+  height: 60px;
+  width: 100%;
+}
+.marketCard .settings {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  p {
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    font-weight: 500;
+    margin-left: 5px;
+    background-color: transparent;
+  }
+  .icon {
+    margin-right: 5px;
+    background-color: transparent;
+  }
 }

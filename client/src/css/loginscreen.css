@@ -11,7 +11,7 @@ section {
   display: flex;
 }
 /*Linear Gradient on Image*/
-section .imgBx:before {
+section .imgBox:before {
   content: "";
   position: absolute;
   top: 0;
@@ -23,13 +23,13 @@ section .imgBx:before {
   mix-blend-mode: screen;
 }
 /* Image Box */
-section .imgBx {
+section .imgBox {
   position: relative;
   width: 50%;
   height: 100%;
 }
 /* Image  */
-section .imgBx img {
+section .imgBox img {
   position: absolute;
   top: 0;
   left: 0;
@@ -111,4 +111,11 @@ a:hover {
 
 section .contentBx .formBx .inputBx p a {
   color: #ff4584;
+}
+
+section .contentBx .formBx .inputBx i {
+  position: absolute;
+  right: 1vw;
+  bottom: 1.8vh;
+  color: rgb(95, 93, 93);
 }

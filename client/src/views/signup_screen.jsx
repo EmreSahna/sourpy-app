@@ -21,14 +21,15 @@ export default function SignupScreen() {
   };
 
   const registerUser = () => {
-    httpRequests.createUser(formValues)
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(e => {
-      console.log(e);
-    });
-  }
+    httpRequests
+      .createUser(formValues)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
     console.log(formErrors);
@@ -53,7 +54,8 @@ export default function SignupScreen() {
   return (
     <section>
       <div className="imgBx">
-        <img src="assets/bg.jpg" />
+        <strong>Bulk Adding Product</strong>
+        <img src="assets/bulkproduct.png" />
       </div>
       <div className="contentBx">
         <div className="formBx">
@@ -91,7 +93,12 @@ export default function SignupScreen() {
             </div>
 
             <div className="inputBx">
-              <input type="submit" value="Register" name="" onClick={registerUser}/>
+              <input
+                type="submit"
+                value="Register"
+                name=""
+                onClick={registerUser}
+              />
             </div>
             <div className="inputBx">
               <p>

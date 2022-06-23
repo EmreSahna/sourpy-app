@@ -20,6 +20,10 @@ class HttpRequest {
   updateKey(id,data) {
     return http.put(`/keys/${id}`,data);
   }
+
+  getKeyById(id){
+    return http.get(`/keys/${id}`);
+  }
 }
 
 export default new HttpRequest();

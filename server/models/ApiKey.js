@@ -8,6 +8,14 @@ const apikeySchema = new mongoose.Schema({
     apiKey:{
         type: String,
         required: true
+    },
+    apiUsername:{
+        type: String,
+        required: false
+    },
+    supplierId:{
+        type:String,
+        required: false
     }
 })
 

@@ -63,6 +63,16 @@ app.get("/keys", function (req, res) {
     });
 });
 
+app.get("/keys/:id", function(req,res){
+  ApiKey.findById({_id: req.params.id})
+  .then(function(ApiKey){
+    res.json(ApiKey);
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+})
+
 app.post("/key/:username", function (req, res) {
   ApiKey.create(req.body)
     .then(function (ApiKey) {
@@ -81,7 +91,7 @@ app.post("/key/:username", function (req, res) {
 });
 
 app.put("/keys/:id", function(req,res){
-  ApiKey.findOneAndUpdate({_id: req.params.id},{apiName: req.body.apiName, apiKey: req.body.apiKey})
+  ApiKey.findOneAndUpdate({_id: req.params.id},{apiName: req.body.apiName, apiKey: req.body.apiKey, apiUsername: req.body.apiUsername, supplierId: req.body.supplierId})
   .then(function(ApiKey){
     res.json(ApiKey);
   })

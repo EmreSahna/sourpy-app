@@ -8,8 +8,12 @@ export default function LoginScreen() {
   const initialValues = { username: "", password: "" };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
-  const [authCode , setAuthCode] = useState({});
+  const [authCode, setAuthCode] = useState({});
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isObscure, setIsObscure] = useState(true);
+  const changeObscure = () => {
+    setIsObscure(!isObscure);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues({ ...formValues, [name]: value });
@@ -22,16 +26,19 @@ export default function LoginScreen() {
   };
 
   const loginUser = () => {
-    httpRequests.getUser(formValues.username)
-    .then(response => {
-      if(response.data.password == formValues.password){
-        navigate(`/panel/${formValues.username}`,{state: response.data.username});
-      }
-    })
-    .catch(e => {
-      console.log(e);
-    })
-  }
+    httpRequests
+      .getUser(formValues.username)
+      .then((response) => {
+        if (response.data.password == formValues.password) {
+          navigate(`/panel/${formValues.username}`, {
+            state: response.data.username,
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
 
   useEffect(() => {
     console.log(formErrors);
@@ -54,7 +61,7 @@ export default function LoginScreen() {
   };
   return (
     <section>
-      <div className="imgBx">
+      <div className="imgBox">
         <img src="assets/bg.jpg" />
       </div>
       <div className="contentBx">
@@ -71,15 +78,23 @@ export default function LoginScreen() {
                 onChange={handleChange}
               />
             </div>
-            <div className="inputBx">
+            <div className="inputBx" id="passwordField">
               <span>Password</span>
               <input
-                type="password"
+                type={isObscure ? "password" : "text"}
                 name="password"
+                className="password"
                 value={formValues.password}
                 onChange={handleChange}
                 placeholder="* * * * * * *"
               />
+              <div onClick={changeObscure}>
+                {isObscure ? (
+                  <i className="fa-solid fa-eye obscure" />
+                ) : (
+                  <i class="fa-solid fa-eye-slash"></i>
+                )}
+              </div>
             </div>
             <div className="remember">
               <label htmlFor="">
@@ -88,7 +103,12 @@ export default function LoginScreen() {
               </label>
             </div>
             <div className="inputBx">
-              <input type="submit" value="Sign in" name="" onClick={loginUser} />
+              <input
+                type="submit"
+                value="Sign in"
+                name=""
+                onClick={loginUser}
+              />
             </div>
             <div className="inputBx">
               <p>
